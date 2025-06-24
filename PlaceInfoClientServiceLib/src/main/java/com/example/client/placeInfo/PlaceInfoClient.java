@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class PlaceInfoClient {
     private final RestTemplate restTemplate;
     private static final String WIKI_SEARCH_API_URL_TEMPLATE =
-            "http://api.geonames.org/wikipediaSearchJSON?formatted=true&q=%s&maxRows=1&username=imXaka&style=full";
+            "http://api.geonames.org/wikipediaSearchJSON?q=%s&maxRows=1&username=imXaka";
 
     public PlaceInfoClient(RestTemplate RestTemplate)
     {
@@ -20,18 +21,19 @@ public class PlaceInfoClient {
     }
 
 
-    public WikiSearch getWikiSearch(String question)
+    public Root getWikiSearch(String question)
     {
-        var WIKI_SEARCH_API_URL = String.format(WIKI_SEARCH_API_URL_TEMPLATE, question);
-
-        return restTemplate.getForObject(WIKI_SEARCH_API_URL, WikiSearch.class);
+       return restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), Root.class);
     }
 
-    public List<WikiSearch> getWikiSearchInList(String question)
+    public Iterable<WikiSearch> getWikiSearchInList(String question)
     {
-        var WIKI_SEARCH_API_URL = String.format(WIKI_SEARCH_API_URL_TEMPLATE, question);
+        return getWikiSearch(question).geonames;
+    }
 
-        return restTemplate.getForObject(WIKI_SEARCH_API_URL, Root.class).getListWikiSearch();
+    public WikiSearch getWikiSearchInSingle(String question)
+    {
+        return Objects.requireNonNull(restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), Root.class)).geonames.get(1);
     }
 
 

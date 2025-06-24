@@ -3,7 +3,6 @@ package com.example.client.placeInfo.dto;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-@Data
 public class WikiSearch {
     public String summary;
     public int elevation;
