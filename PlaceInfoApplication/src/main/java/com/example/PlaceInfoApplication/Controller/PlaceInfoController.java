@@ -17,7 +17,7 @@ public class PlaceInfoController {
     {
         m_placeInfoClient = placeInfoClient;
     }
-    @GetMapping("place")
+    @GetMapping("place") //Not_Work
     public WikiSearch getPlace(@RequestParam String q)
     {
         return m_placeInfoClient.getWikiSearchInSingle(q);
