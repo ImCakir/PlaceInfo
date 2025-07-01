@@ -1,0 +1,33 @@
+/mvnw text eol=lf
+*.cmd text eol=crlf
+
+# Normalize all text files (auto-detect by Git)
+* text=auto
+
+# Windows batch scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Unix/Linux shell scripts
+*.sh text eol=lf
+
+# Java source files
+*.java text
+
+# Properties files
+*.properties text
+
+# XML files
+*.xml text
+
+# JSON files
+*.json text
+
+# Ignore binary files from line-ending normalization
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.jar binary
+*.class binary
