@@ -1,0 +1,35 @@
+# Automatically normalize text files to use LF in the repository
+# On checkout, Git will convert to the appropriate line endings for the OS (CRLF on Windows, LF on macOS/Linux)
+* text=auto
+
+# Explicitly enforce CRLF for Windows batch scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Explicitly enforce LF for Unix shell scripts
+*.sh text eol=lf
+
+# Java source files as normal text
+*.java text
+
+# Properties and config files
+*.properties text
+*.yml text
+*.yaml text
+*.xml text
+*.json text
+
+# Markdown and documentation
+*.md text
+*.txt text
+
+# Ignore line ending normalization for binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.jar binary
+*.class binary
+*.exe binary
