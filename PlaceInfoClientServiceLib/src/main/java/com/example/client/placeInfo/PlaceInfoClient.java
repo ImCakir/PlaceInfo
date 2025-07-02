@@ -1,11 +1,9 @@
 package com.example.client.placeInfo;
 
-import com.example.client.placeInfo.dto.Root;
 import com.example.client.placeInfo.dto.WikiSearch;
+import com.example.client.placeInfo.dto.WikiSearchInfo;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Objects;
 
 @Component
 public class PlaceInfoClient {
@@ -18,18 +16,21 @@ public class PlaceInfoClient {
         this.restTemplate = RestTemplate;
     }
 
-    public Root getWikiSearch(String question)
+    public WikiSearch getWikiSearch(String question)
     {
-       return restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), Root.class);
+       return restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), WikiSearch.class);
     }
 
-    public Iterable<WikiSearch> getWikiSearchInList(String question)
+    public Iterable<WikiSearchInfo> getWikiSearchInList(String question)
     {
         return getWikiSearch(question).geonames;
     }
 
-    public WikiSearch getWikiSearchInSingle(String question)
-    {
-        return Objects.requireNonNull(restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), Root.class)).geonames.get(1);
+    public WikiSearchInfo getWikiSearchInSingle(String question) {
+        WikiSearch wikiSearch = restTemplate.getForObject(String.format(WIKI_SEARCH_API_URL_TEMPLATE, question), WikiSearch.class);
+        if (wikiSearch != null && wikiSearch.geonames != null && !wikiSearch.geonames.isEmpty()) {
+            return wikiSearch.geonames.get(0);
+        }
+        return null;
     }
 }
