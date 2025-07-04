@@ -38,22 +38,23 @@ public class PlaceInfoRepositoryHelper {
         return placeRepository.save(place);
     }
 
-    public Optional<PlaceInfo>  findByPlaceInfo(Long Id)
+    public PlaceInfo savePlaceInfo(PlaceInfo placeInfo)
+    {
+        return placeInfoRepository.save(placeInfo);
+    }
+
+    public Optional<PlaceInfo>  findByPlaceId(Long Id)
     {
         return placeInfoRepository.findById(Id);
     }
-
-    public Iterable<PlaceInfo> findByAllPlace(String question)
+    public Optional<Place>  findByPlace(String question)
     {
-        return placeInfoRepository.findAll();
-    }
-    public Iterable<PlaceInfo> findAllByPlaceInfo(Iterable<PlaceInfo> placeInfos)
-    {
-        return placeInfoRepository.findAll();
+        return placeRepository.findById(question);
     }
 
-
-
-
+    public Iterable<Place> findByAllPlace(Iterable<String> iterQ)
+    {
+        return placeRepository.findAllById(iterQ);
+    }
 
 }
