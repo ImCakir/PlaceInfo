@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/dev/api")
 public class PlaceInfoController {
@@ -26,7 +24,10 @@ public class PlaceInfoController {
 
     @GetMapping("db/place")
     public PlaceInfo getPlaceByService(@RequestParam String q) {
-        return m_placeInfoAppService.findByPlaceInfo(q);
+
+        var pi = m_placeInfoAppService.findByPlaceInfo(q).getFirst();
+        pi.setPlace(null); //json infinity loop temporary solution, could be handled service layer
+        return pi;
     }
 
     @GetMapping("client/place")
