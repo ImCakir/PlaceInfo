@@ -1,97 +1,139 @@
 
 # PlaceInfo Microservices Project
 
-This project is a **Java Spring Boot microservices application** that integrates with the **GeoNames Wikipedia Search API**, stores location-related data in a database, and exposes client endpoints to retrieve or search this data.
-
+This is a modular Spring Boot application that demonstrates a clean architecture for fetching and managing place information.  
+It is divided into multiple Maven modules for better separation of concerns.
 ---
 
-##  Features
-
- **GeoNames Wikipedia Search API Integration**
-- Fetches place information from [GeoNames](http://www.geonames.org/wikipedia.html) based on keywords.
-
- **Database Caching Layer**
-- Checks if requested data exists in the local database.
-- If not found, retrieves from GeoNames API, saves into the database, then returns to client.
-
- **Keyword-based Search**
-- Allows clients to perform keyword-based searches directly on locally stored data without calling the external service.
-
- **Layered Architecture**
-- Separation of concerns with clear Controller, Service, Repository layers.
-- Dedicated external client service library to handle GeoNames API calls.
 
 ---
-
-## 🏗 Project Structure
+## 🚀 Modules
 
 ```
-.
-├── PlaceInfoApplication          # Main Spring Boot application
-│   ├── src/main/java/com/example
-│   │   └── PlaceInfoApplication
-│   │       ├── Controller        # REST Controllers
-│   │       └── ...               # Main app classes
-│   └── src/main/resources
-│       └── application.properties
-│
-├── PlaceInfoClientServiceLib     # External service client library
-│   ├── src/main/java/com/example/client/placeInfo
-│   │   ├── PlaceInfoClient       # Handles HTTP calls to GeoNames
-│   │   ├── config                # RestTemplate configuration
-│   │   └── dto                   # Data transfer objects
-│   └── src/main/resources
-│
-├── pom.xml                       # Maven multi-module configuration
-├── .gitignore
-└── README.md
-
-....
+PlaceInfo/
+├── PlaceInfoApplication/          # Main Spring Boot application (API entry)
+├── PlaceInfoRepositoryLib/        # Data access layer (Repositories & Entities)
+├── PlaceInfoServiceLib/           # Business logic layer (Services & Mappers)
+├── PlaceInfoClientServiceLib/     # External API clients (GeoNames, etc.)
 ```
 
 ---
 
-## ⚙️ How it works
+## 📁 Project Structure
 
-1️⃣ **Client makes a request**
-- Either to get data by keyword or to perform a local search.
-
-2️⃣ **Check local database**
-- If data exists, returns immediately.
-
-3️⃣ **Else, call GeoNames API**
-- Retrieves data, saves into DB, then returns to the client.
-
----
-
-##  Tech Stack
-
-- **Java 17**
-- **Spring Boot 3.x**
-- **Spring Data JPA / Hibernate**
-- **H2 / PostgreSQL** (or your preferred DB)
-- **RestTemplate / WebClient** for external API calls
-- **Maven** multi-module build
-- **IntelliJ IDEA** (recommended IDE)
-
----
-
-## Running the project
-
-Make sure you have Java & Maven installed.
-
-
-
-## 📝 License
-
-This project is licensed under the MIT License.  
-See [LICENSE](LICENSE) file for details.
+```
+PlaceInfo-main/
+│
+├── PlaceInfoApplication/
+│   ├── src/main/java/com/example/PlaceInfoApplication/
+│   │   ├── PlaceInfoApplication.java      # Spring Boot entry point
+│   │   └── Controller/
+│   │       └── PlaceInfoController.java   # REST endpoints
+│   └── resources/application.properties
+│
+├── PlaceInfoRepositoryLib/
+│   ├── src/main/java/com/example/repository/
+│   │   ├── IPlaceInfoRepository.java      # JPA Repository interfaces
+│   │   └── IPlaceRepository.java
+│   ├── entity/
+│   │   ├── Place.java
+│   │   └── PlaceInfo.java                 # JPA entities
+│   └── dal/PlaceInfoRepositoryHelper.java
+│
+├── PlaceInfoServiceLib/
+│   ├── src/main/java/com/example/service/
+│   │   ├── PlaceInfoAppService.java       # Main business service
+│   │   └── mapper/
+│   │       └── PlaceInfoServiceMapper.java# DTO mapper
+│
+├── PlaceInfoClientServiceLib/
+│   └── (under development or external API client logic)
+│
+└── pom.xml files (per module) + parent aggregation
+```
 
 ---
 
-## 🙌 Contributing
+## ⚙️ Tech Stack
 
-PRs are welcome!  
-Feel free to fork, clone, and create pull requests.
+- Java 17
+- Spring Boot
+- Spring Data JPA
+- H2 / PostgreSQL (configurable)
+- Maven multi-module
+- RestTemplate (for external GeoNames API calls)
 
 ---
+
+## ▶️ How to Run
+
+### 1️⃣ Build
+```bash
+mvn clean install
+```
+
+This will build all modules (`repository`, `service`, `client`, `application`) and create the full package.
+
+### 2️⃣ Run the application
+Go to `PlaceInfoApplication` module and start:
+
+```bash
+cd PlaceInfoApplication
+mvn spring-boot:run
+```
+
+By default it will start on `http://localhost:8080`.
+
+---
+
+## 🚀 Example Endpoints
+
+| Endpoint                  | Description                     |
+|----------------------------|--------------------------------|
+| `GET /db/place?q=istanbul` | Fetch place info from DB       |
+| `GET /client/place?q=rome` | Fetch from GeoNames directly   |
+| `POST /db/place`           | Save a new place info record   |
+
+---
+
+## 📝 Configuration
+
+Edit `application.properties` in each module as needed, e.g.:
+
+```properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.jpa.hibernate.ddl-auto=update
+geonames.username=YOUR_USERNAME
+```
+
+---
+
+## ✅ Tests
+
+Each module contains its own test suite under `src/test/java`.
+
+Run all tests via:
+
+```bash
+mvn test
+```
+
+---
+
+## 📄 License
+
+MIT License. See [LICENSE](./LICENSE) for details.
+
+---
+
+## 🤝 Contributing
+
+Pull requests welcome!  
+If you want to propose a feature, open an issue first to discuss.
+
+---
+
+## ✨ Author
+
+- Onur Özcan ([imozcan](https://github.com/imOzcan))
+- Çağla Çakır ([imcakir](https://github.com/imCakir))
