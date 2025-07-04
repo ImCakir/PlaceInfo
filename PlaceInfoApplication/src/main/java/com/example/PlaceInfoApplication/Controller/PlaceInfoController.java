@@ -1,36 +1,38 @@
 package com.example.PlaceInfoApplication.Controller;
 
 import com.example.client.placeInfo.PlaceInfoClient;
-import com.example.client.placeInfo.dto.Root;
-import com.example.client.placeInfo.dto.WikiSearch;
+import com.example.client.placeInfo.dto.WikiSearchInfo;
+import com.example.entity.PlaceInfo;
+import com.example.service.PlaceInfoAppService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dev/api")
 public class PlaceInfoController {
+    private final PlaceInfoAppService  m_placeInfoAppService;
     private final PlaceInfoClient m_placeInfoClient;
 
-    public PlaceInfoController(PlaceInfoClient placeInfoClient)
+    public PlaceInfoController(PlaceInfoAppService m_placeInfoAppService,
+                               PlaceInfoClient m_placeInfoClient)
     {
-        m_placeInfoClient = placeInfoClient;
+        this.m_placeInfoAppService = m_placeInfoAppService;
+        this.m_placeInfoClient = m_placeInfoClient;
     }
-    @GetMapping("place") //Not_Work
-    public WikiSearch getPlace(@RequestParam String q)
+
+    @GetMapping("db/place")
+    public PlaceInfo getPlaceByService(@RequestParam String q) {
+        return m_placeInfoAppService.findByPlaceInfo(q);
+    }
+
+    @GetMapping("client/place")
+    public WikiSearchInfo getPlaceByClient(@RequestParam String q)
     {
         return m_placeInfoClient.getWikiSearchInSingle(q);
     }
-    @GetMapping("details")
-    public Iterable<WikiSearch>  getPlaceInList(@RequestParam String q)
-    {
-        return m_placeInfoClient.getWikiSearchInList(q);
-    }
 
-    @GetMapping("demo")
-    public Root getPlaceRoot(@RequestParam String q)
-    {
-        return m_placeInfoClient.getWikiSearch(q);
-    }
 }
