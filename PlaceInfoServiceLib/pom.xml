@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example.service</groupId>
 	<artifactId>PlaceInfoServiceLib</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>PlaceInfoServiceLib</name>
 	<description>PlaceInfoServiceLib project for Spring Boot</description>
 	<url/>
@@ -34,6 +34,18 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.example.repository</groupId>
+			<artifactId>PlaceInfoRepositoryLib</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>PlaceInfoClientServiceLib</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -63,6 +75,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
